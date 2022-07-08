@@ -1,0 +1,13 @@
+defaults: &defaults
+  app_name: Saraosna Coffee Shop
+  api_version: 1.0.0
+  api_name: Saraosna Coffee Shop API Backend with Ruby on Rails
+
+development:
+  <<: *defaults
+
+test:
+  <<: *defaults
+
+production:
+  <<: *defaults

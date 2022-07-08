@@ -1,0 +1,44 @@
+- set_meta_tags title: "Edit #{@serving_method.name}"
+/ = render 'shared/admin/header_gradient'
+header.bg-gradient-info.pb-8.pt-5.pt-md-8
+  .container-fluid
+    .header-body
+      /! Card stats
+      .row
+        .col-md-4
+          = link_to admin_serving_types_path(type: @serving_method.slug) do
+            .card.card-stats.mb-4.mb-xl-0
+              .card-body
+                .row
+                  .col
+                    h5.card-title.text-uppercase.text-muted.mb-0 Total Serving Types
+                    span.h2.font-weight-bold.mb-0 = @serving_method.serving_types.size
+                  .col-auto
+                    .icon.icon-shape.bg-info.text-white.rounded-circle.shadow
+                      = icon('fas', 'concierge-bell')
+                      / i.ni.ni-circle-08
+
+                p.mt-3.mb-0.text-muted.text-sm
+                  / span.text-success.mr-2
+                  /   i.fa.fa-arrow-up
+                  /   | 3.48%
+                  / span.text-nowrap Since last month
+.container-fluid.mt--9
+  .row.mt-5
+    .col-xl-12.mb-5.mb-xl-0
+      .card.shadow
+        .card-header.border-0
+          .row.align-items-center
+            .col
+              h3.mb-0 Edit #{@serving_method.name}
+            .col.text-right
+              = link_to 'Back', admin_serving_methods_path, class: 'btn btn-sm btn-primary'
+        .card-body
+          == render 'form'
+  
+  
+  h1.text-center.mt-4 Serving Types
+  .row.mt-5
+    = render partial: 'admin/serving_types/serving_type', collection: @serving_method.serving_types, as: :serving_type
+
+

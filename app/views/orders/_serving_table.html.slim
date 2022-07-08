@@ -1,0 +1,12 @@
+table#servingtable.table-striped
+  tbody
+    - number = 0
+    - @orders.status_processing.latest.each do |order|
+      tr.table-order.clickable data-target="orderId#{order.id}"
+        td = number += 1
+        td = order.name
+        td = order.queue_number
+        td  
+          button.btn.btn-icon.btn-2.btn-grey.clickable data-target="orderId#{order.id}" type="button"
+            span.btn-inner--icon
+              = icon('fas', 'plus')

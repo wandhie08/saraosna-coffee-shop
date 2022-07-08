@@ -1,0 +1,99 @@
+- set_meta_tags title: 'Login Admin',
+                author: 'Yana'
+
+.header.bg-gradient-info.py-9.py-lg-9
+  .container
+    .header-body.text-center.mb-5
+      .row.justify-content-center
+        .col-lg-5.col-md-6
+          h1.text-white Hello There.. 👋
+          h3.text-white How was your day?
+          / p.text-lead.text-light Use these awesome forms to login or create new account in your project for free.
+  .separator.separator-bottom.separator-skew.zindex-100
+    svg preserveaspectratio="none" version="1.1" viewbox=("0 0 2560 100") x="0" xmlns="http://www.w3.org/2000/svg" y="0" 
+      polygon.fill-default points=("2560 0 2560 100 0 100") 
+.container.mt--9.pb-6
+  .row.justify-content-center
+    .col-lg-5.col-md-7
+      .card.bg-secondary.shadow.border-0
+        .card-header.bg-transparent
+          .text-muted.text-center.mt-2
+            = image_tag 'logo.svg', width: 50
+          /.btn-wrapper.text-center
+            a.btn.btn-neutral.btn-icon href="#" 
+              span.btn-inner--icon
+                img src="../assets/img/icons/common/github.svg" /
+              span.btn-inner--text Github
+            a.btn.btn-neutral.btn-icon href="#" 
+              span.btn-inner--icon
+                img src="../assets/img/icons/common/google.svg" /
+              span.btn-inner--text Google
+        .card-body.px-lg-5
+          .text-center.text-muted.mb-4
+            small Admin Sign in
+          = form_for(resource, as: resource_name, :html => { class: 'form-horizontal', role: 'form' }, url: session_path(resource_name)) do |f| 
+            .form-group.mb-3
+              .input-group.input-group-alternative
+                .input-group-prepend
+                  span.input-group-text
+                    i.ni.ni-email-83
+                = f.email_field :email, class: 'form-control', placeholder: "Email", autofocus: false
+            .form-group
+              .input-group.input-group-alternative
+                .input-group-prepend
+                  span.input-group-text
+                    i.ni.ni-lock-circle-open
+                = f.password_field :password, class: 'form-control', placeholder: "Password", autofocus: false
+            /.form-group
+              .input-group.input-group-alternative
+                .input-group-prepend
+                  span.input-group-text
+                    i.ni.ni-lock-circle-open
+                = rucaptcha_input_tag(class: 'form-control', placeholder: 'Input Captcha')
+            /.form-group
+              center
+                = link_to '#', class: "rucaptcha-image-box", data:{turbolinks: false} do
+                  = rucaptcha_image_tag(alt: 'Captcha')
+                
+            .custom-control.custom-control-alternative.custom-checkbox
+              = f.check_box :remember_me, class: 'custom-control-input', as: :boolean
+              / input.custom-control-input id=(" customCheckLogin") type="checkbox" /
+              label.custom-control-label for="admin_remember_me"
+                span.text-muted Remember me
+            .text-center
+              = f.submit 'Sign in', class: 'btn btn-info my-4 btn-submit', data: {loading_text: 'Signing...', disable_with: 'Please wait....'}
+      /.row.mt-3
+        .col-6
+          a.text-light href="#" 
+            small Forgot password?
+        .col-6.text-right
+          a.text-light href="#" 
+            small Create new account
+
+/ h2
+/   | Log in
+/ = simple_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
+/   .form-inputs
+/     = f.input :email,
+/                      required: false,
+/                      autofocus: true,
+/                      input_html: { autocomplete: "email" }
+/     = f.input :password,
+/                      required: false,
+/                      input_html: { autocomplete: "current-password" }
+/     = f.input :remember_me, as: :boolean if devise_mapping.rememberable?
+/   .form-actions
+/     = f.button :submit, "Log in"
+/ = render "admins/shared/links"
+
+javascript:
+  $('.btn-submit').click(function () {
+    var btn = $(this)
+    NProgress.start();
+    // NProgress.inc(0.4);
+    // NProgress.set(0.4);
+    btn.button('loading')
+    setTimeout(function () {
+      btn.button('reset')
+    }, 3000)
+  });

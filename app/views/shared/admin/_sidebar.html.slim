@@ -1,0 +1,55 @@
+ul.navbar-nav
+  li.nav-item
+    = active_link_to admin_dashboard_path, class: 'nav-link'  do
+      i.ni.ni-tv-2.text-success
+      | Dashboard
+  li.nav-item
+    = active_link_to admin_coffee_beans_path, class: 'nav-link'  do
+      = icon('fas', 'mug-hot', class: "text-danger")
+      | Coffee Beans
+  li.nav-item
+    = active_link_to admin_serving_methods_path, class: 'nav-link'  do
+      = icon('fas', 'concierge-bell', class: "text-info")
+      | Serving Methods
+  li.nav-item
+    = active_link_to admin_serving_types_path, class: 'nav-link'  do
+      = icon('fas', 'hand-holding', class: "text-warning")
+      | Serving Type
+  /li.nav-item
+    = active_link_to admin_orders_path, class: 'nav-link'  do
+      = icon('fab', 'opencart', class: "text-success")
+      | Orders
+  /li.nav-item
+    = active_link_to admin_parameters_path, class: 'nav-link'  do
+      = icon('fas', 'cog', class: "text-info")
+      | Settings
+
+  /li.nav-item
+    = active_link_to admin_backgrounds_path, class: 'nav-link'  do
+      = icon('fas', 'palette', class: "text-info")
+      | Background
+
+  li.nav-item
+    a.nav-link aria-controls="navbar-examples" data-toggle="collapse" href="#vak" role="button"
+      = icon('fas', 'cog', class: "text-info")
+      span.nav-link-text  Setting
+    #vak.collapse class="#{active_class(['parameters', 'backgrounds', 'front_images'], 'show')}"
+      ul.nav.nav-sm.flex-column
+        li.nav-item
+          = active_link_to 'Parameter', admin_parameters_path, class: 'nav-link'
+
+        li.nav-item
+          = active_link_to 'Front Image', admin_front_images_path, class: 'nav-link'
+
+        li.nav-item
+          = active_link_to 'Background', edit_admin_background_path(background_object), class: 'nav-link'
+
+        /li.nav-item
+          = active_link_to 'Options', admin_vak_options_path, class: 'nav-link'
+
+  li.nav-item
+    = active_link_to admin_orders_path, class: 'nav-link'  do
+      = icon('fab', 'opencart', class: "text-success")
+      | Orders
+  
+  

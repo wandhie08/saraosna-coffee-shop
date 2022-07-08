@@ -1,0 +1,18 @@
+p#notice = notice
+
+p
+  strong Image:
+  = @front_image.image
+p
+  strong Slug:
+  = @front_image.slug
+p
+  strong Published:
+  = @front_image.published
+p
+  strong Name:
+  = @front_image.name
+
+=> link_to 'Edit', edit_front_image_path(@front_image)
+'|
+=< link_to 'Back', front_images_path

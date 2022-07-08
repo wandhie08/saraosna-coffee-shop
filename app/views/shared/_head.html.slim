@@ -1,0 +1,31 @@
+meta charset="utf-8" /
+meta content="Yana" name="author" /
+meta content="#{I18n.locale.upcase}" property="og:locale" /
+meta content="website" property="og:type" /
+meta name="theme-color" content="#e94057"/
+meta name="u2f-support" content="true"/
+meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport" /
+meta content="no-preview" name="turbolinks-cache-control" /
+= yield :custom_meta
+link rel="manifest" href="/manifest.json" crossOrigin="use-credentials"
+link rel="icon" sizes="192x192" href="/logo.png"
+link href="/logo.png" rel="apple-touch-icon" sizes="52x52" /
+link href="/logo.png" rel="apple-touch-icon" sizes="72x72" /
+link href="/logo.png" rel="apple-touch-icon" sizes="76x76" /
+link href="/logo.png" rel="apple-touch-icon" sizes="120x120" /
+link href="/logo.png" rel="apple-touch-icon" sizes="144x144" /
+link href="/logo.png" rel="apple-touch-icon" sizes="152x152" /
+
+= display_meta_tags site: 'Coffee Shop'
+= display_meta_tags og: { title: :title, description: :description }
+= display_meta_tags icon: '/logo.png'
+= csrf_meta_tags
+= csp_meta_tag
+= action_cable_meta_tag
+
+= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload'
+
+= javascript_include_tag 'application', 'data-turbolinks-track': 'reload'
+/ = javascript_pack_tag 'application', 'data-turbolinks-track': 'reload'
+
+= yield :custom_js_header

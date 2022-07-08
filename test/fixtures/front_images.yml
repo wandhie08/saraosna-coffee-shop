@@ -1,0 +1,30 @@
+# == Schema Information
+#
+# Table name: front_images
+#
+#  id         :bigint           not null, primary key
+#  image      :string
+#  name       :string
+#  published  :boolean          default(TRUE)
+#  slug       :string
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#
+# Indexes
+#
+#  index_front_images_on_slug  (slug) UNIQUE
+#
+
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  image: MyString
+  slug: MyString
+  published: false
+  name: MyString
+
+two:
+  image: MyString
+  slug: MyString
+  published: false
+  name: MyString

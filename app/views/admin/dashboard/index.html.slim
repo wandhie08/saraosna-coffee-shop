@@ -1,0 +1,78 @@
+- set_meta_tags title: "Admin Dashboard",
+                author: "Yana"
+
+header.bg-gradient-warning.pb-8.pt-5.pt-md-8
+  .container-fluid
+    .header-body
+      /! Card stats
+      .row
+        .col-lg-3.col-md-4
+          = link_to admin_coffee_beans_path do
+            .card.card-stats.mb-4.mb-xl-0
+              .card-body
+                .row
+                  .col
+                    h5.card-title.text-uppercase.text-muted.mb-0 Coffee Beans
+                    span.h2.font-weight-bold.mb-0 = CoffeeBean.all.size
+                  .col-auto
+                    .icon.icon-shape.bg-danger.text-white.rounded-circle.shadow
+                      = icon('fas', 'mug-hot')
+                      / i.ni.ni-circle-08
+
+                p.mt-3.mb-0.text-muted.text-sm
+                  / span.text-success.mr-2
+                  /   i.fa.fa-arrow-up
+                  /   | 3.48%
+                  / span.text-nowrap Since last month
+        .col-xl-3.col-lg-3.col-md-4
+          = link_to admin_serving_methods_path do
+            .card.card-stats.mb-4.mb-xl-0
+              .card-body
+                .row
+                  .col
+                    h5.card-title.text-uppercase.text-muted.mb-0 Serving Methods
+                    span.h2.font-weight-bold.mb-0 = ServingMethod.count
+                  .col-auto
+                    .icon.icon-shape.bg-info.text-white.rounded-circle.shadow
+                      = icon('fas', 'concierge-bell')
+                      / i.ni.ni-circle-08
+
+                p.mt-3.mb-0.text-muted.text-sm
+                  / span.text-success.mr-2
+                  /   i.fa.fa-arrow-up
+                  /   | 3.48%
+                  / span.text-nowrap Since last month
+        .col-xl-3.col-lg-3.col-md-4
+          = link_to admin_serving_types_path do
+            .card.card-stats.mb-4.mb-xl-0
+              .card-body
+                .row
+                  .col
+                    h5.card-title.text-uppercase.text-muted.mb-0 Serving Type
+                    span.h2.font-weight-bold.mb-0 = ServingType.count
+                  .col-auto
+                    .icon.icon-shape.bg-warning.text-white.rounded-circle.shadow
+                      = icon('fas', 'hand-holding')
+                      / i.ni.ni-circle-08
+
+                p.mt-3.mb-0.text-muted.text-sm
+                  / span.text-success.mr-2
+                  /   i.fa.fa-arrow-up
+                  /   | 3.48%
+                  / span.text-nowrap Since last month
+
+        .col-xl-3.col-lg-3.col-md-4
+          = link_to admin_orders_path do
+            .card.card-stats.mb-4.mb-xl-0
+              .card-body
+                .row
+                  .col
+                    h5.card-title.text-uppercase.text-muted.mb-0 Total Order
+                    span.h2.font-weight-bold.mb-0 = Order.count
+                  .col-auto
+                    .icon.icon-shape.bg-success.text-white.rounded-circle.shadow
+                      = icon('fab', 'opencart')
+                      / i.ni.ni-circle-08
+
+                p.mt-3.mb-0.text-muted.text-sm
+        

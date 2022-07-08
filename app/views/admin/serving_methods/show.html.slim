@@ -1,0 +1,18 @@
+p#notice = notice
+
+p
+  strong Name:
+  = @serving_method.name
+p
+  strong Image:
+  = @serving_method.image
+p
+  strong Description:
+  = @serving_method.description
+p
+  strong Slug:
+  = @serving_method.slug
+
+=> link_to 'Edit', edit_admin_serving_method_path(@serving_method)
+'|
+=< link_to 'Back', admin_serving_methods_path

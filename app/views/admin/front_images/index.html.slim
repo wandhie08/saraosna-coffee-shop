@@ -1,0 +1,157 @@
+- set_meta_tags title: "Fron Images",
+                author: "yana"
+- content_for :custom_meta
+  meta content="reload" name="turbolinks-visit-control" /
+header.bg-gradient-info.pb-8.pt-5.pt-md-8
+  .container-fluid
+    .header-body
+      /! Card stats
+      .row
+        .col-lg-4.col-md-4
+          = link_to admin_front_images_path do
+            .card.card-stats.mb-4.mb-xl-0
+              .card-body
+                .row
+                  .col
+                    h5.card-title.text-uppercase.text-muted.mb-0 Images
+                    span.h2.font-weight-bold.mb-0 = @front_images.size
+                  .col-auto
+                    .icon.icon-shape.bg-danger.text-white.rounded-circle.shadow
+                      = icon('fas', 'palette')
+                      / i.ni.ni-circle-08
+
+                p.mt-3.mb-0.text-muted.text-sm
+                  / span.text-success.mr-2
+                  /   i.fa.fa-arrow-up
+                  /   | 3.48%
+                  / span.text-nowrap Since last month
+        .col-lg-4.col-md-4
+          .card.card-stats.mb-4.mb-xl-0
+            .card-body
+              .row
+                .col
+                  h5.card-title.text-muted.mb-0 Random Image
+                .col-auto
+                  label.custom-toggle
+                    = check_box_tag 'random_image', 'yes', $redis.get('coffee_app:random_image?').eql?('true') ? true : false
+                    / input #{'checked' if $redis.get('coffee_app:random_image?').eql?('true')} id="randomCheckbox" type="checkbox" /
+                    span.custom-toggle-slider.rounded-circle
+
+.container-fluid.mt--9
+  .row.mt-5
+    - if @front_images.present?
+      - @front_images.each do |background|
+        .col-md-4.mb-3
+          .card.shadow
+            = link_to edit_admin_front_image_path(background) do
+              = image_tag background.image_url, class: "card-img-top"
+            .card-body
+              h4 Publised :
+              p.card-text 
+                span.badge.badge-info.d-inline = background.published
+              h4 Name :
+              p.card-text 
+                 = background.name
+              = link_to "Delete", admin_front_image_path(background), class: "btn btn-link text-danger px-0", method: :delete, data: { confirm: 'Are you sure?' }
+    - else
+      .col-xl-12.mb-5.mb-xl-0
+        .card.shadow
+          .card-header.border-0
+            .row.align-items-center
+              /.col
+                h3.mb-0 Front Images
+              /.col.text-right
+
+          .card-body
+            .alert.alert-danger No Record Found
+/ .container-fluid.mt--8
+  .row.mt-5
+    .col-xl-12.mb-5.mb-xl-0
+      .card.shadow
+        .card-header.border-0
+          .row.align-items-center
+            .col
+              h3.mb-0 Front Images
+            /.col.text-right
+
+        .card-body
+          table#dttb-front_images.responsive.nowrap.table.table-hover data-sort="true" data-source="#{url_for(format: :json)}"
+            thead
+              tr
+                th data-data="image" Image
+                th data-data="published" Published
+                th data-data="name" Name
+                th data-data="url" data-orderable="false" data-class-name="all" data-searchable="false" class="skip-export" width="100px"
+
+
+/= link_to 'New Front image', new_front_image_path
+= link_to new_admin_front_image_path, class: "btn btn-icon-float btn-info btn-float" do
+  = icon('fas', 'plus')
+
+
+- content_for :custom_js
+  javascript:
+    
+    const checkbox = document.getElementById('random_image')
+    checkbox.addEventListener('change', (event) => {
+      if (event.target.checked) {
+        Rails.ajax({
+          type: "POST",
+          url: '/api/backgrounds/random_image?checked=true',
+          cache: false,
+          success: data => {
+            console.log('success update random image', data);
+            notice(data.message)
+            
+          },
+          error: data => {
+            console.error('error update random image', data);
+          }
+        });
+      } else {
+        Rails.ajax({
+          type: "POST",
+          url: '/api/backgrounds/random_image?checked=false',
+          cache: false,
+          success: data => {
+            console.log('success update random image', data);
+            notice(data.message)
+            
+          },
+          error: data => {
+            console.error('error update random image', data);
+          }
+        });
+      }
+    })
+
+    function notice(message){
+      $.notify({
+        title: "",
+        icon: 'fas fa-bell',
+        showProgressbar: true,
+        animate: {
+          enter: 'animated fadeInDown',
+          exit: 'animated fadeOutUp'
+        },
+        message: message
+      },{
+          // settings
+          element: 'body',
+          type: "success",
+          allow_dismiss: true,
+          delay: 2000,
+          placement: {
+            from: "top",
+            align: "right"
+          },
+        }
+      );
+    }
+    
+
+
+
+
+
+

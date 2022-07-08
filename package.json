@@ -1,0 +1,10 @@
+{
+  "name": "coffee-shop",
+  "private": true,
+  "dependencies": {
+    "@rails/actioncable": "^6.0.0-rc2"
+  },
+  "devDependencies": {
+    "webpack-dev-server": "^3.8.1"
+  }
+}

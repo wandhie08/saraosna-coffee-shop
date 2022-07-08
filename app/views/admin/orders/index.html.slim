@@ -1,0 +1,103 @@
+- set_meta_tags title: "Orders List",
+                author: "Yana"
+/ - content_for :custom_meta
+  meta content="reload" name="turbolinks-visit-control" /
+/- content_for :custom_js_header
+  = javascript_include_tag 'cable'
+header.bg-gradient-info.pb-8.pt-5.pt-md-8
+  .container-fluid
+    .header-body
+      /! Card stats
+      .row
+        .col-xl-3.col-lg-3.col-md-4
+          = link_to admin_orders_path do
+            .card.card-stats.mb-4.mb-xl-0
+              .card-body
+                .row
+                  .col
+                    h5.card-title.text-uppercase.text-muted.mb-0 Total Order
+                    span.h2.font-weight-bold.mb-0 = Order.count
+                  .col-auto
+                    .icon.icon-shape.bg-success.text-white.rounded-circle.shadow
+                      = icon('fab', 'opencart')
+                      / i.ni.ni-circle-08
+
+                p.mt-3.mb-0.text-muted.text-sm
+
+.container-fluid.mt--7
+  .row.mt-3
+    .col-xl-12.mb-5.mb-xl-0
+      .card.shadow
+        .card-header.border-0
+          .row.align-items-center
+            .col
+              h3.mb-0 List Orders
+            /.col
+              = link_to 'Export Mobile Phone', export_admin_orders_path(format: :csv), method: :post, class: 'btn btn-success'
+            /.col.text-right
+              = link_to 'Clear Order', truncate_admin_orders_path(@orders), class: 'btn btn-danger', data: {confirm: "Are you  sure wan to delete order?", title: 'WARNING'}, method: 'POST'
+        .card-body
+          .mb-3
+            = sort_link(@q, :status, default_order: :desc) do
+              strong Sort By Status
+            | &nbsp; - &nbsp;
+            = sort_link(@q, :queue_number, default_order: :asc) do
+              strong Sort by queue number
+            | &nbsp; - &nbsp;
+            = sort_link(@q, :created_at, default_order: :asc) do
+              strong Sort by date
+            | &nbsp; - &nbsp;
+            = sort_link(@q, :deleted, default_order: :desc) do
+              strong Sort by deleted
+            | &nbsp; - &nbsp;
+            = link_to admin_orders_path do
+              strong Reset
+          hr.my-3
+          = search_form_for([:admin, @q]) do |f|
+            .row
+              .col
+                .form-group
+                  = f.label :name_cont, "Search Orders"
+                  = f.search_field :queue_number_or_mobile_phone_or_coffee_bean_name_or_serving_type_name_or_serving_method_name_cont, class: "form-control", placeholder: "Search by, queue number, mobile phone, bean, serving type and serving method "
+          .table-responsive
+            table.table.align-items-center
+              thead
+                th no
+                th Name
+                th Queue Number
+                th Phone
+                th Serving Type
+                th Serving Method
+                th Deleted
+                th Status
+                th Date Order
+
+          
+              tbody
+                - no = 0
+                - @orders.each do |order|
+                  tr
+                    td = no += 1
+                    td = order.name
+                    td = order.queue_number
+                    td = order.mobile_phone
+                    td = order.serving_type.name.titleize
+                    td = order.serving_method.name.titleize
+                    td
+                      span.badge class="#{order.deleted? ? 'badge-danger' : 'badge-warning'}" = order.deleted
+                    td = order_status(order.status)
+                    td =l order.created_at, format: :long
+        .col-12
+          .float-left
+            == pagy_bootstrap_nav(@pagy)  
+- content_for :custom_js
+  javascript:
+    $(document).on("turbolinks:load", () => {
+      $("#datatable").dataTable({
+        buttons: [
+          'csv', 'excel', 'pdf', 'print'
+        ]
+      });
+    });
+
+

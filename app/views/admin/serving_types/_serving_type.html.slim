@@ -1,0 +1,31 @@
+.col-md-4.mb-3
+  .card.shadow
+    = link_to edit_admin_serving_type_path(serving_type) do
+      = image_tag serving_type.image_url, class: "card-img-top"
+    .card-body
+      h5.h2.card-title.mb-0 style="color: #{serving_type.color}" = serving_type.name.titleize
+      hr.my-3.mx-0
+      .row.mt-2
+        .col-md-6
+          dl
+            dt Bean :
+            dd = serving_type.bean
+        .col-md-6
+          dl
+            dt Result :
+            dd = serving_type.result
+
+        .col-md-6
+          dl
+            dt Serving Method :
+            dd = link_to serving_type.serving_method.try(:name), edit_admin_serving_method_path(serving_type.serving_method)
+
+        .col-md-6
+          dl
+            dt Recommendation? :
+            dd = serving_type.is_recommendation
+      
+      h4 Description :
+      p.card-text = serving_type.description
+      
+      = link_to "Edit", edit_admin_serving_type_path(serving_type), class: "btn btn-link px-0"

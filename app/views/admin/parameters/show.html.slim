@@ -1,0 +1,24 @@
+p#notice = notice
+
+p
+  strong Name:
+  = @parameter.name
+p
+  strong Alias:
+  = @parameter.alias
+p
+  strong Description:
+  = @parameter.description
+p
+  strong Value:
+  = @parameter.value
+p
+  strong Values:
+  = @parameter.values
+p
+  strong Slug:
+  = @parameter.slug
+
+=> link_to 'Edit', edit_parameter_path(@parameter)
+'|
+=< link_to 'Back', parameters_path

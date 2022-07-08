@@ -1,0 +1,31 @@
+= form_for([:admin, @front_image])  do |f|
+  - if @front_image.errors.any?
+    = errors_messages_for(@front_image)
+
+  .row
+    .col-md-12
+      .form-group
+        = f.label :image
+        - if action_name.eql? 'edit'
+          = f.file_field :image, class: 'form-control', data: {fileuploader_files: @front_image.file_data.to_json}
+        - else
+          = f.file_field :image, class: 'form-control'
+    .col-md-12
+      .form-group
+        h4 Published
+        label.custom-toggle
+          = f.check_box :published
+          span.custom-toggle-slider.rounded-circle
+        
+  .actions 
+    = f.button :submit, class: 'btn btn-warning', data: {loading_text: 'Please wait....', disable_with: 'Please wait....'}
+
+/- content_for :custom_js
+  javascript:
+    $('input[name="front_image[image]').fileuploader({
+      listInput: 'front-image',
+      inputNameBrackets: false,
+      extensions: ['jpg', 'jpeg', 'png'],
+      addMore: false,
+      mutiple: false
+    });

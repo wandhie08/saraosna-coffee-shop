@@ -1,0 +1,27 @@
+p#notice = notice
+
+p
+  strong Name:
+  = @admin_serving_type.name
+p
+  strong Image:
+  = @admin_serving_type.image
+p
+  strong Slug:
+  = @admin_serving_type.slug
+p
+  strong Serving method:
+  = @admin_serving_type.serving_method
+p
+  strong Description:
+  = @admin_serving_type.description
+p
+  strong Bean:
+  = @admin_serving_type.bean
+p
+  strong Result:
+  = @admin_serving_type.result
+
+=> link_to 'Edit', edit_admin_serving_type_path(@admin_serving_type)
+'|
+=< link_to 'Back', admin_serving_types_path

@@ -1,0 +1,16 @@
+- set_meta_tags title: 'Edit Front Image'
+= render 'shared/admin/header_gradient'
+.container-fluid.mt--9
+  .row.mt-5
+    .col-xl-12.mb-5.mb-xl-0
+      .card.shadow
+        .card-header.border-0
+          .row.align-items-center
+            .col
+              h3.mb-0 = title
+            /.col.text-right
+              = link_to 'Back', admin_backgrounds_path, class: 'btn btn-sm btn-primary'
+        .card-body
+          == render 'form'
+
+/= render 'js_plugin'

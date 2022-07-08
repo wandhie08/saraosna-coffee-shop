@@ -1,0 +1,116 @@
+- set_meta_tags title: 'Coffee Beans'
+header.bg-gradient-info.pb-8.pt-5.pt-md-8
+  .container-fluid
+    .header-body
+      /! Card stats
+      .row
+        .col-md-4
+          = link_to admin_coffee_beans_path do
+            .card.card-stats.mb-4.mb-xl-0
+              .card-body
+                .row
+                  .col
+                    h5.card-title.text-uppercase.text-muted.mb-0 Total Coffee Beans
+                    span.h2.font-weight-bold.mb-0 = CoffeeBean.all.size
+                  .col-auto
+                    .icon.icon-shape.bg-warning.text-white.rounded-circle.shadow
+                      = icon('fas', 'mug-hot')
+                      / i.ni.ni-circle-08
+
+                p.mt-3.mb-0.text-muted.text-sm
+                  / span.text-success.mr-2
+                  /   i.fa.fa-arrow-up
+                  /   | 3.48%
+                  / span.text-nowrap Since last month
+
+.container-fluid.mt--9
+  .row.mt-5
+    - @coffees.each do |coffee|
+      .col-md-4.mb-3
+        .card.shadow
+          = link_to edit_admin_coffee_bean_path(coffee) do
+            - if coffee.image.present?
+              = image_tag coffee.image_url, class: "card-img-top"
+            - else
+              = image_tag 'coffee-bean-1.jpg', class: "card-img-top"
+          .card-body
+            h5.h2.card-title.mb-0 = coffee.name
+            hr.my-3.mx-0
+            .row.mt-2
+              .col-md-6
+                dl
+                  dt Jenis :
+                  dd = coffee.kind_of_coffee
+              .col-md-6
+                dl
+                  dt Area :
+                  dd = coffee.area
+              .col-md-6
+                dl
+                  dt Ketinggian :
+                  dd = coffee.elevation
+              .col-md-6
+                dl
+                  dt Varietas :
+                  dd = coffee.varietas
+              .col-md-6
+                dl
+                  dt Proses :
+                  dd = coffee.process
+              .col-md-6
+                dl
+                  dt Stock :
+                  dd = coffee.stock
+              .col-md-6
+                dl
+                  dt Available at :
+                  dd = coffee.available_at
+              .col-md-6
+                dl
+                  dt Ordered :
+                  dd 0
+            hr.my-3.mx-0
+            h4 Serving Recommendation :
+            p.card-text = coffee.recommendation.try(:name)
+            h4 Description :
+            p.card-text = coffee.description
+            h4 Cupping Notes :
+            p.card-text.text-muted = coffee.notes
+            = link_to "Edit", edit_admin_coffee_bean_path(coffee), class: "btn btn-link px-0"
+            = link_to "Delete", admin_coffee_bean_path(coffee), class: "btn btn-link px-0", method: :delete, data: {confirm: "Are you sure want to delete record?"}
+  /.row.mt-5
+    .col-xl-12.mb-5.mb-xl-0
+      .card.shadow
+        .card-body
+
+          .table-responsive
+            table.table
+              thead
+                tr
+                  th Name
+                  th Image
+                  th Description
+                  th Slug
+                  th
+                  th
+                  th
+
+              tbody
+                - @coffees.each do |coffee|
+                  tr
+                    td = coffee.name
+                    td = coffee.image
+                    td = coffee.description
+                    td = coffee.slug
+                    td = link_to 'Show', coffee
+                    td = link_to 'Edit', edit_coffee_path(coffee)
+                    td = link_to 'Destroy', coffee, data: { confirm: 'Are you sure?' }, method: :delete
+
+
+= link_to new_admin_coffee_bean_path, class: "btn btn-icon-float btn-info btn-float" do
+  = icon('fas', 'plus')
+
+
+          
+
+

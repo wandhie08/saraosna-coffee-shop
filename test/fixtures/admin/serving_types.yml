@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  image: MyString
+  slug: MyString
+  serving_method: one
+  description: MyText
+  bean: MyString
+  result: MyString
+
+two:
+  name: MyString
+  image: MyString
+  slug: MyString
+  serving_method: two
+  description: MyText
+  bean: MyString
+  result: MyString

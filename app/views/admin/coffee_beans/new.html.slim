@@ -1,0 +1,16 @@
+- set_meta_tags title: 'Create new coffee bean'
+= render 'shared/admin/header_gradient'
+.container-fluid.mt--9
+  .row.mt-5
+    .col-xl-12.mb-5.mb-xl-0
+      .card.shadow
+        .card-header.border-0
+          .row.align-items-center
+            .col
+              h3.mb-0 Create New Coffee Bean
+            .col.text-right
+              = link_to 'Back', admin_coffee_beans_path, class: 'btn btn-sm btn-primary'
+        .card-body
+          == render 'form'
+
+

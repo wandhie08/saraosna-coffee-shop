@@ -1,0 +1,12 @@
+p#notice = notice
+
+p
+  strong Image:
+  = @background.image
+p
+  strong Color:
+  = @background.color
+
+=> link_to 'Edit', edit_background_path(@background)
+'|
+=< link_to 'Back', backgrounds_path

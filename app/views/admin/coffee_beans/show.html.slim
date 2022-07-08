@@ -1,0 +1,18 @@
+p#notice = notice
+
+p
+  strong Name:
+  = @coffee_bean.name
+p
+  strong Image:
+  = @coffee_bean.image
+p
+  strong Description:
+  = @coffee_bean.description
+p
+  strong Slug:
+  = @coffee_bean.slug
+
+=> link_to 'Edit', edit_coffee_bean_path(@coffee_bean)
+'|
+=< link_to 'Back', coffee_beans_path

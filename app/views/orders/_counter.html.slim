@@ -1,0 +1,41 @@
+- content_for :custom_js 
+  javascript:
+    $(document).on("turbolinks:load", () => {
+      var orders = #{raw @orders.to_json}
+      var orderID, timeminutesId, timesecondsId;
+      orders.forEach((item) => {
+        orderID = 'timerOrderId-'+item.id
+        timeminutesId = 'timeminutes-'+item.id
+        timesecondsId = 'timeseconds-'+item.id
+        countUpFromTimeLoop(item.created_at, orderID, timeminutesId, timesecondsId);
+      });
+
+      function countUpFromTimeLoop(countFrom, id, timeminutesId, timesecondsId) {
+        var now = new Date(),
+            countFrom = new Date(countFrom),
+            timeDifference = (now - countFrom);
+        var secondsInADay = 60 * 60 * 1000 * 24,
+            secondsInAHour = 60 * 60 * 1000;
+          
+        minutes = Math.floor(((timeDifference % (secondsInADay)) % (secondsInAHour)) / (60 * 1000) * 1);
+        seconds = Math.floor((((timeDifference % (secondsInADay)) % (secondsInAHour)) % (60 * 1000)) / 1000 * 1);
+
+        if (minutes.toString().length == 1) {
+          minutes = "0" + minutes;
+        }
+        if (seconds.toString().length == 1) {
+          seconds = "0" + seconds;
+        }
+
+        var countIDS = $('.'+id);
+        $(countIDS).each(function(index, element) {
+          var timeminutesElement = element.getElementsByClassName(timeminutesId);
+          var timesecondsElement = element.getElementsByClassName(timesecondsId);
+          for (i=0;i<timeminutesElement.length;i++) {
+            timeminutesElement[i].innerHTML = minutes;
+            timesecondsElement[i].innerHTML = seconds;
+          }
+        });
+        countUpFromTimeLoop.interval = setTimeout(function(){ countUpFromTimeLoop(countFrom, id, timeminutesId, timesecondsId); }, 1000);
+      };
+    });

@@ -1,0 +1,70 @@
+- set_meta_tags title: 'Settings'
+/ = render 'shared/admin/header_gradient'
+header.bg-gradient-info.pb-8.pt-5.pt-md-8
+  .container-fluid
+    .header-body
+      /! Card stats
+      .row
+        .col-lg-3.col-md-4
+          = link_to admin_parameters_path do
+            .card.card-stats.mb-4.mb-xl-0
+              .card-body
+                .row
+                  .col
+                    h5.card-title.text-uppercase.text-muted.mb-0 Parameter
+                    span.h2.font-weight-bold.mb-0 = Parameter.all.size
+                  .col-auto
+                    .icon.icon-shape.bg-danger.text-white.rounded-circle.shadow
+                      = icon('fas', 'cog')
+                      / i.ni.ni-circle-08
+
+                p.mt-3.mb-0.text-muted.text-sm
+                  / span.text-success.mr-2
+                  /   i.fa.fa-arrow-up
+                  /   | 3.48%
+                  / span.text-nowrap Since last month
+.container-fluid.mt--9
+  .row.mt-5
+    .col-xl-12.mb-5.mb-xl-0
+      .card.shadow
+        .card-header.border-0
+          .row.align-items-center
+            .col
+              h3.mb-0 Settings / Parameter
+            .col.text-right
+              = link_to 'New Parameter', new_admin_parameter_path, class: 'btn btn-sm btn-info'
+        .card-body
+          = search_form_for([:admin, @q]) do |f|
+            .row.mb-4
+              .col-12
+                .input-group
+                  = f.search_field :name_or_alias_or_description_cont, class: 'form-control', placeholder: "Search Setting / Parameter"
+                  span.input-group-btn
+                    = f.submit class: 'btn btn-info' do
+                      i.fa.fa-search
+          
+          .table-responsive
+            table.table
+              thead
+                tr
+                  th Name
+                  th Description
+                  / th Alias
+                  th Value
+                  th Values
+                  th
+                  / th
+
+              tbody
+                - @parameters.each do |parameter|
+                  tr
+                    td = parameter.name
+                    td = parameter.description
+                    / td = parameter.alias
+                    td = parameter.value
+                    td = parameter.values.empty? ? " " : parameter.values
+                    / td = link_to 'Show', admin_parameter_path(parameter)
+                    td = link_to 'Edit', edit_admin_parameter_path(parameter)
+                    / td = link_to 'Destroy', admin_parameter_path(parameter), data: { confirm: 'Are you sure?' }, method: :delete
+
+

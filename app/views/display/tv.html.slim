@@ -1,0 +1,46 @@
+- set_meta_tags title: "TV List Orders",
+                author: "Yana"
+- content_for :custom_js_header
+  = javascript_include_tag 'cable'
+.queue-display
+  table.tg.table
+    tr
+      th.tg-nrix.title rowspan="3"  Serving
+      th.tg-nrix.title rowspan="3"  
+        | Ready For
+        br
+        | Pickup
+      - @sevent_orders.each do |order|
+        th.tg-0lax.text-center = order.queueing_time_duration
+        
+      th.tg-0lax Queuing Time
+    tr
+      - @sevent_orders.each do |order|
+        td
+          .pickup-number = order.queue_number
+      td.tg-0lax Queue number
+    tr
+      - @sevent_orders.each do |order|
+        td.tg-0lax.text-center = order.serving_time_duration
+      td.tg-0lax Bean to brew
+    tr
+      td.tg-nrix
+       
+      td.tg-nrix colspan="7" rowspan="5"
+
+    - @orders.status_processing.latest.limit(8).each do |order|
+      tr
+        td.tg-baqh.pt-0
+          br
+          .queue-number 
+            = order.queue_number
+          .detail 
+            = order.coffee_bean.name
+            br
+            = order.serving_type.name
+
+  
+  
+
+
+

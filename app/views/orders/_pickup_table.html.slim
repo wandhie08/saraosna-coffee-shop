@@ -1,0 +1,14 @@
+table#table.table-striped
+  tbody
+    - orders.each do |order|
+      tr.table-order
+        td = order.queue_number
+        td.pr-2 
+          button.btn.btn-icon.btn-2.btn-grey.call.ladda-button data-style="zoom-in" data-size="l" data-order="#{order.id}" type="button"
+            span.btn-inner--icon.ladda-label
+              = icon('fas', 'volume-up')
+        td.pl-0
+          button.btn.btn-icon.btn-2.btn-grey.delivered.ladda-button data-style="expand-left" data-size="l" data-order="#{order.id}" type="button"
+            span.btn-inner--icon.ladda-label
+              / = image_tag 'clear_all.png', width: 200
+              = icon('far', 'times-circle')

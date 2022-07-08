@@ -1,0 +1,46 @@
+- if notice
+  javascript:
+    $.notify({
+      title: "Success:",
+      icon: 'fas fa-bell',
+      showProgressbar: true,
+      animate: {
+        enter: 'animated fadeInDown',
+        exit: 'animated fadeOutUp'
+      },
+      message: "#{notice}"
+    },{
+        // settings
+        element: 'body',
+        type: "success",
+        allow_dismiss: true,
+        delay: 20000,
+        placement: {
+          from: "top",
+          align: "right"
+        },
+      }
+    );
+- if alert
+  javascript:
+    $.notify({
+      title: "Failed:",
+      icon: 'fas fa-bell',
+      showProgressbar: true,
+      animate: {
+        enter: 'animated fadeInDown',
+        exit: 'animated fadeOutUp'
+      },
+      message: "#{alert}"
+    },{
+        // settings
+        element: 'body',
+        type: "danger",
+        delay: 20000,
+        allow_dismiss: true,
+        placement: {
+          from: "top",
+          align: "right"
+        },
+      }
+    );

@@ -1,0 +1,90 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, or any plugin's
+ * vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any other CSS/SCSS
+ * files in this directory. Styles in this file should be added after the last require_* statement.
+ * It is generally better to create a new file per style scope.
+ *
+ *= require nprogress
+ *= require nprogress-bootstrap
+ *= require nprogress-turbolinks5
+ *= require notie
+ *= require admin/argon
+ *= require nucleo
+ 
+ */
+
+$nprogress-color: #c2185b;
+$nprogress-height: 4px;
+$nprogress-zindex: 10100;
+
+// @import "bootstrap";
+@import "font-awesome-sprockets";
+@import "font-awesome";
+@import 'nprogress';
+@import 'nprogress-bootstrap';
+@import "datatables";
+
+
+#map {
+  height: 500px;
+  // height: -webkit-fill-available;
+}
+#infowindow-content .title {
+  font-weight: bold;
+}
+#infowindow-content {
+  display: none;
+}
+#map #infowindow-content {
+  display: inline;
+}
+.nav-link.active{
+  background-color: #5e72e433 !important;
+}
+
+.btn-float {
+  position: fixed;
+  height: 4.2rem;
+  min-width: 4.2rem;
+  width: 4.2rem;
+  border-radius: 50%;
+  z-index: 9;
+  color: #fff;
+  right: 25px;
+  bottom: 40px;
+  font-size: 1.4rem;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+
+  &:hover {
+    color: #fff;
+  }
+
+  a {
+    color: inherit;
+  }
+
+  &.btn--icon-text {
+    i {
+      margin-right: 0.5rem;
+    }
+  }
+}
+
+.btn-icon-float {
+  height: 4.2rem;
+  min-width: 4.2rem;
+  width: 4.2rem;
+  padding: 0;
+  font-size: 1.3rem;
+  overflow: hidden;
+
+  line-height: normal;
+}

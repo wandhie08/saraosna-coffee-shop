@@ -1,0 +1,45 @@
+= simple_form_for([:admin, @parameter]) do |f|
+  - if @parameter.errors.any?
+    = errors_messages_for(@parameter)
+  .row
+    
+    .col-md-6
+      .form-group
+        / = f.label :name, "Parameter Name"
+        = f.input :name, :input_html => { :class => 'form-control', placeholder: "Parameter Name / Setting Name", required: true }, autocomplete: "nope", autocorrect: "off"
+    .col-md-6
+      .form-group
+        / = f.label :alias
+        = f.input :alias, :input_html => { :class => 'form-control', placeholder: "Must be uniq", required: true }, readonly: action_name.eql?('edit')
+    .col-md-6
+      .form-group
+        / = f.label :description
+        = f.input :description, :input_html => { :class => 'form-control', placeholder: "What this setting for?" }
+    .col-md-6
+      .form-group
+        / = f.label :value
+        = f.input :value, :input_html => { :class => 'form-control', placeholder: "Value for setting if it only need one object, leave it blank if need more that one value" }
+    .col-md-6
+      .form-group
+        / = f.label :values, "Value for settinng need more than 1"
+        = f.input :values, as: :array, :input_html => { :class => 'form-control mt-2', placeholder: "Value for setting if more than one value" }
+        #input_values.mt-2
+        a.input-values href="" class="btn btn-sm btn-danger mt-2" Add another value
+    
+  .actions 
+    = f.button :submit, class: 'btn btn-warning', data: {loading_text: 'Please wait....', disable_with: 'Please wait....'}
+
+
+- content_for :custom_js
+  javascript:
+    $('a.input-values').on('click', function(ev){
+      // alert('hallo');
+      // console.log(ev);
+      var $lastEmailField;
+      ev.preventDefault();
+      $lastEmailField = $('input[name="parameter[values][]"]:last-of-type').clone();
+      console.log($lastEmailField);
+      $lastEmailField.val("");
+      return $("#input_values").append($lastEmailField);
+    })
+  

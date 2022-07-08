@@ -1,0 +1,52 @@
+// $nprogress-color: #8bc34a;
+$nprogress-color: #c2185b;
+$nprogress-height: 4px;
+$nprogress-zindex: 10100;
+
+@import "font-awesome-sprockets";
+@import "font-awesome";
+@import 'nprogress';
+@import 'nprogress-bootstrap';
+@import "colors";
+// @import "summernote-bs4";
+// @import "theme/color";
+// @import "social-share-button";
+
+
+.section-shaped{
+	.shape-blue{
+		background: linear-gradient(150deg, #2196f3 15%, #217cf3 70%, #03A9F4 94%);
+	}
+} 
+
+.nav-link.active,
+.show > .nav-link.nav-blue {
+  color: $white !important;
+  background-color: $teal !important;
+}
+
+.container-sm {
+  width: 100%;
+  padding-right: 100px;
+  padding-left: 250px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.container-md {
+  width: 100%;
+  padding-right: 250px;
+  padding-left: 250px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+
+.section-breadcumb{
+  height: 400px;
+  background-size: cover;
+  background-position: center center;
+  .row{
+    padding-top: 11rem;
+  }
+}

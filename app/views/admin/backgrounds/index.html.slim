@@ -1,0 +1,123 @@
+- set_meta_tags title: 'Background and color'
+= render 'shared/admin/header_gradient'
+
+/header.bg-gradient-info.pb-8.pt-5.pt-md-8
+  .container-fluid
+    .header-body
+      /! Card stats
+      .row
+        .col-lg-3.col-md-4
+          = link_to admin_backgrounds_path do
+            .card.card-stats.mb-4.mb-xl-0
+              .card-body
+                .row
+                  .col
+                    h5.card-title.text-uppercase.text-muted.mb-0 Background
+                    span.h2.font-weight-bold.mb-0 = Background.all.size
+                  .col-auto
+                    .icon.icon-shape.bg-danger.text-white.rounded-circle.shadow
+                      = icon('fas', 'palette')
+                      / i.ni.ni-circle-08
+
+                p.mt-3.mb-0.text-muted.text-sm
+                  / span.text-success.mr-2
+                  /   i.fa.fa-arrow-up
+                  /   | 3.48%
+                  / span.text-nowrap Since last month
+        /.col-lg-3.col-md-4
+          .card.card-stats.mb-4.mb-xl-0
+            .card-body
+              .row
+                .col
+                  h5.card-title.text-muted.mb-0 Random Image
+                .col-auto
+                  label.custom-toggle
+                    = check_box_tag 'random_image', 'yes', $redis.get('coffee_app:random_image?').eql?('true') ? true : false
+                    / input #{'checked' if $redis.get('coffee_app:random_image?').eql?('true')} id="randomCheckbox" type="checkbox" /
+                    span.custom-toggle-slider.rounded-circle
+
+.container-fluid.mt--9
+  .row.mt-5
+    - @backgrounds.each do |background|
+      .col-md-4.mb-3
+        .card.shadow
+          = link_to edit_admin_background_path(background) do
+            = image_tag background.image_url, class: "card-img-top"
+          .card-body
+            h5.h2.card-title.mb-0 = background.position
+            hr.my-3.mx-0
+            h4 Color :
+            p.card-text 
+              span.badge.badge-default.d-inline  style="background-color: #{background.color}; color:white" = background.color
+
+/ br
+/= link_to new_admin_background_path, class: "btn btn-icon-float btn-info btn-float" do
+  = icon('fas', 'plus')
+/ = link_to 'New Background', new_background_path
+
+/ - content_for :custom_js
+  javascript:
+    
+    const checkbox = document.getElementById('random_image')
+    checkbox.addEventListener('change', (event) => {
+      if (event.target.checked) {
+        Rails.ajax({
+          type: "POST",
+          url: '/api/backgrounds/random_image?checked=true',
+          cache: false,
+          success: data => {
+            console.log('success update random image', data);
+            notice(data.message)
+            
+          },
+          error: data => {
+            console.error('error update random image', data);
+          }
+        });
+      } else {
+        Rails.ajax({
+          type: "POST",
+          url: '/api/backgrounds/random_image?checked=false',
+          cache: false,
+          success: data => {
+            console.log('success update random image', data);
+            notice(data.message)
+            
+          },
+          error: data => {
+            console.error('error update random image', data);
+          }
+        });
+      }
+    })
+
+    function notice(message){
+      $.notify({
+        title: "",
+        icon: 'fas fa-bell',
+        showProgressbar: true,
+        animate: {
+          enter: 'animated fadeInDown',
+          exit: 'animated fadeOutUp'
+        },
+        message: message
+      },{
+          // settings
+          element: 'body',
+          type: "success",
+          allow_dismiss: true,
+          delay: 2000,
+          placement: {
+            from: "top",
+            align: "right"
+          },
+        }
+      );
+    }
+    
+
+
+
+
+
+

@@ -1,0 +1,63 @@
+= form_for([:admin, @serving_type]) do |f|
+  - if @serving_type.errors.any?
+    #error_explanation
+      = errors_messages_for(@serving_type)
+      
+  .row
+    .col-md-6
+      .form-group
+        = f.label :name
+        = f.text_field :name, class: "form-control"
+    .col-md-6
+      .form-group
+        = f.label :image
+        = f.file_field :image, class: "form-control"
+    .col-md-12
+      .form-group
+        = f.label :description
+        = f.text_area :description, class: "form-control", rows: 3
+    .col-md-6
+      .form-group
+        = f.label :serving_method
+        / = f.text_field :serving_method, class: "form-control"
+        = f.select(:serving_method_id, ServingMethod.all.map{|serving| [serving.name, serving.id]}, {}, class: "form-control")
+    
+    .col-md-6
+      .form-group
+        = f.label :bean
+        = f.text_field :bean, class: "form-control"
+    .col-md-6
+      .form-group
+        = f.label :result
+        = f.text_field :result, class: "form-control"
+    .col-md-6
+      .form-group
+        = f.label :color
+        = f.color_field :color, class: "form-control"
+    .col-md-2
+      h4 Visible
+      label.custom-toggle
+        = f.check_box :visible
+        span.custom-toggle-slider.rounded-circle
+    .col-md-4
+      h4 Is Recommendation?
+      label.custom-toggle
+        = f.check_box :is_recommendation
+        span.custom-toggle-slider.rounded-circle
+    #notes.col-md-12 style="display: #{@serving_type.visible? ? 'none' : ''}"
+      .form-group
+        = f.label :notes
+        = f.text_area :notes, rows: 4, class: "form-control"
+  = f.submit "Submit", class: 'btn btn-warning', data: {loading_text: 'Please wait....', disable_with: 'Please wait....'}
+
+
+
+- content_for :custom_js
+  javascript:
+    document.getElementById('serving_type_visible').onclick = function() {
+      if ( this.checked ) {
+        $('#notes').hide();
+      } else {
+        $('#notes').show();
+      }
+    };

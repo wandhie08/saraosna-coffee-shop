@@ -1,0 +1,65 @@
+doctype html
+html
+  head
+    = render 'shared/admin/admin_head'
+  body.bg-default
+    .main-content
+      nav.navbar.navbar-top.navbar-horizontal.navbar-expand-md.navbar-dark
+        .container.px-4
+          = link_to new_admin_session_path, data:{turbolinks: false}, class: 'navbar-brand'
+            = image_tag 'logo.svg'
+          button.navbar-toggler aria-controls="navbarSupportedContent" aria-expanded="false" aria-label=("Toggle navigation") data-target="#navbar-collapse-main" data-toggle="collapse" type="button" 
+            span.navbar-toggler-icon
+          #navbar-collapse-main.collapse.navbar-collapse
+            /! Collapse header
+            .navbar-collapse-header.d-md-none
+              .row
+                .col-6.collapse-brand
+                  = link_to root_path, data:{turbolinks: false} 
+                    = image_tag 'logo.svg'
+                .col-6.collapse-close
+                  button.navbar-toggler aria-controls="sidenav-main" aria-expanded="false" aria-label=("Toggle sidenav") data-target="#navbar-collapse-main" data-toggle="collapse" type="button" 
+                    span
+                    span
+            /! Navbar items
+            ul.navbar-nav.ml-auto
+              li.nav-item
+                = link_to root_path, class: 'nav-link nav-link-icon'
+                  i.ni.ni-planet
+                  span.nav-link-inner--text Landing Page
+              /li.nav-item
+                = link_to admin_dashboard_path, class: 'nav-link nav-link-icon'
+                  i.ni.ni-circle-08
+                  span.nav-link-inner--text Dashboard
+              li.nav-item
+                = link_to new_admin_session_path, class: 'nav-link nav-link-icon'
+                  i.ni.ni-key-25
+                  span.nav-link-inner--text Login
+              /li.nav-item
+                a.nav-link.nav-link-icon href="../examples/profile.html" 
+                  i.ni.ni-single-02
+                  span.nav-link-inner--text Profile
+      
+      = yield
+    footer.py-5
+      .container
+        .row.align-items-center.justify-content-xl-between
+          .col-xl-6
+            .copyright.text-center.text-xl-left.text-muted
+              | &copy; 2019 By
+              = link_to 'Yana', 'https://muhammadyana.me/', class: 'font-weight-bold ml-1', target: '_blank'
+          .col-xl-6
+            ul.nav.nav-footer.justify-content-center.justify-content-xl-end
+              li.nav-item
+                = link_to 'Github', 'https://github.com/muhammadyana', class: 'nav-link', target: '_blank'
+              li.nav-item
+                = link_to 'Instagram', 'https://instagram.com/muhammad_yana/', class: 'nav-link', target: '_blank'
+              li.nav-item
+                = link_to 'Facebook', 'https://fb.com/muhammadyana', class: 'nav-link', target: '_blank'
+              / li.nav-item
+                a.nav-link href="https://github.com/creativetimofficial/argon-dashboard/blob/master/LICENSE.md" target="_blank"  MIT License
+    
+    = yield :custom_js
+    javascript:
+      NProgress.done();
+  = render 'shared/admin/notices'

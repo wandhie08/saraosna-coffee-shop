@@ -1,0 +1,47 @@
+= form_for([:admin, @serving_method]) do |f|
+  - if @serving_method.errors.any?
+    = errors_messages_for(@serving_method)
+
+  .row
+    .col-md-6
+      .form-group
+        = f.label :name
+        = f.text_field :name, class: "form-control"
+    .col-md-6
+      .form-group
+        = f.label :image
+        = f.file_field :image, class: "form-control"
+    .col-md-12
+      .form-group
+        = f.label :description
+        = f.text_area :description, rows: 4, class: "form-control"
+    .col-md-2
+      h4 Visible
+      label.custom-toggle
+        = f.check_box :visible
+        span.custom-toggle-slider.rounded-circle
+
+    #notes.col-md-12 style="display: #{@serving_method.visible? ? 'none' : ''}"
+      .form-group
+        = f.label :notes
+        = f.text_area :notes, rows: 4, class: "form-control"
+    .col-md-12
+      = f.submit "Submit", class: 'btn btn-warning', data: {loading_text: 'Please wait....', disable_with: 'Please wait....'}
+
+
+- content_for :custom_js
+  javascript:
+    var notes = $('#serving_method_visible').val();
+    console.log(notes);
+    document.getElementById('serving_method_visible').onclick = function() {
+      // access properties using this keyword
+      if ( this.checked ) {
+        // if checked ...
+        $('#notes').hide();
+        // alert( this.value );
+      } else {
+        
+        $('#notes').show();
+        // if not checked ...
+      }
+    };

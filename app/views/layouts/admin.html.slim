@@ -1,0 +1,85 @@
+doctype html
+html
+  head
+    = render 'shared/admin/admin_head'
+  body
+    nav#sidenav-main.navbar.navbar-vertical.fixed-left.navbar-expand-md.navbar-light.bg-white
+      .container-fluid
+        /! Toggler
+        button.navbar-toggler aria-controls="sidenav-main" aria-expanded="false" aria-label=("Toggle navigation") data-target="#sidenav-collapse-main" data-toggle="collapse" type="button" 
+          span.navbar-toggler-icon
+        /! Brand
+        = link_to admin_root_path, class: 'navbar-brand pt-0'
+          = image_tag 'logo.svg', class: 'navbar-brand-img'
+        /! User
+        ul.nav.align-items-center.d-md-none
+          li.nav-item.dropdown
+            a.nav-link.nav-link-icon aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" href="#" role="button" 
+              i.ni.ni-bell-55
+            .dropdown-menu.dropdown-menu-arrow.dropdown-menu-right aria-labelledby="navbar-default_dropdown_1" 
+              a.dropdown-item href="#"  Action
+              a.dropdown-item href="#"  Another action
+              .dropdown-divider
+              a.dropdown-item href="#"  Something else here
+          li.nav-item.dropdown
+            = render 'shared/admin/admin_header_menu'
+        /! Collapse
+        #sidenav-collapse-main.collapse.navbar-collapse
+          /! Collapse header
+          .navbar-collapse-header.d-md-none
+            .row
+              .col-6.collapse-brand
+                = link_to admin_root_path do 
+                  = image_tag 'logo.svg'
+              .col-6.collapse-close
+                button.navbar-toggler aria-controls="sidenav-main" aria-expanded="false" aria-label=("Toggle sidenav") data-target="#sidenav-collapse-main" data-toggle="collapse" type="button" 
+                  span
+                  span
+          /! Form
+          form.mt-4.mb-3.d-md-none
+            .input-group.input-group-rounded.input-group-merge
+              input.form-control.form-control-rounded.form-control-prepended aria-label="Search" placeholder="Search" type="search" /
+              .input-group-prepend
+                .input-group-text
+                  span.fa.fa-search
+          /! Navigation
+          = render 'shared/admin/sidebar'
+          /! Divider
+          hr.my-3
+          /! Heading
+          /h6.navbar-heading.text-muted Documentation
+          /! Navigation
+          /ul.navbar-nav.mb-md-3
+            li.nav-item
+              a.nav-link href="https://demos.creative-tim.com/argon-dashboard/docs/getting-started/overview.html" 
+                i.ni.ni-spaceship
+                | Getting started
+            li.nav-item
+              a.nav-link href="https://demos.creative-tim.com/argon-dashboard/docs/foundation/colors.html" 
+                i.ni.ni-palette
+                | Foundation
+    .main-content
+      nav#navbar-main.navbar.navbar-top.navbar-expand-md.navbar-dark
+        .container-fluid
+          /! Brand
+          = link_to '', admin_root_path, class: 'h4 mb-0 text-white text-uppercase d-none d-lg-inline-block'
+          
+          /! User
+          ul.navbar-nav.align-items-center.d-none.d-md-flex
+            li.nav-item.dropdown
+              = render 'shared/admin/admin_header_menu'
+
+      = yield
+      .container-fluid
+        footer.footer
+          .row.align-items-center.justify-content-xl-between
+            .col-xl-6
+              .copyright.text-center.text-xl-left.text-muted
+                | &copy; 2019 By
+                a.font-weight-bold.ml-1 href="https://muhammadyana.me" target="_blank"  Yana
+    = yield :custom_js
+    javascript:
+      NProgress.done();
+    
+  = render 'shared/admin/notices'
+

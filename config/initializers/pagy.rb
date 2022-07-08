@@ -1,0 +1,5 @@
+require 'pagy/extras/bootstrap'
+require 'pagy/extras/trim'
+require 'pagy/extras/support'
+require 'pagy/extras/i18n'
+require 'pagy/extras/countless'

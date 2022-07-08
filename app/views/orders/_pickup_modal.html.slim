@@ -1,0 +1,59 @@
+.modal.fade aria-hidden="true" aria-labelledby="orderId#{order.id}" role="dialog" tabindex="-1" id="orderId#{order.id}"
+  .modal-dialog.modal-dialog-centered role="document" 
+    .modal-content
+      .modal-order
+        center.modal-header
+          
+        h5.text-center Nomor Antrian
+        center.modal-body.p-1
+          h1.text-default = order.queue_number
+          /div class="timerOrderId-#{order.id}"
+            p.counter-time.d-inline class="timeminutes-#{order.id}" 
+            p.counter-time.d-inline 
+              | :
+            p.counter-time.d-inline class="timeseconds-#{order.id}" 
+          
+        .counter-wrapper
+          table
+            tr
+              td.text-right.statement Biji Kopi: 
+              td.text-left.information = order.coffee_bean.name.titleize
+            tr
+              td.text-right.statement Metode Penyajian: 
+              td.text-left.information = order.serving_type.name.titleize
+
+            tr
+              td.text-right.statement Lama Antrian: 
+              td.text-left.information = time_diff(order.created_at, order.queuing_time)
+            tr
+              td.text-right.statement Lama Penyajian: 
+              td.text-left.information 
+                div class="timerOrderId-#{order.id}"
+                  .d-inline.text-white class="timeminutes-#{order.id}" 
+                  .d-inline.text-white
+                    | :
+                  .d-inline.text-white class="timeseconds-#{order.id}" 
+            /tr
+              td colspan="2" 
+                small.text-center Ambil Cup Kopi dan berikan label sesuai Nomor Antrian
+          center.mt-3
+            small Ambil Cup Kopi dan berikan label sesuai Nomor Antrian
+        / .modal-footer
+        .row.p-4
+          .col-md-6
+            button.btn.btn-lg.btn-grey.float-left.btn-icon data-dismiss="modal" type="button"
+              = image_tag 'forbidden.png', width: 25
+              /span.btn-inner--icon
+                = icon('fas', 'times-circle')
+              span.btn-inner--text Cancel
+          .col-md-6
+            
+
+            /button.btn.btn-lg.btn-danger.float-right.btn-icon.confirm id="buttonConfirm" data-modalorder="#orderId#{order.id}" data-order="#{order.id}" type="button"
+              = image_tag 'sound.png', width: 25
+              span.btn-inner--text Confirm
+
+
+            button.btn.btn-lg.btn-danger.float-right.btn-icon.confirm.ladda-button data-style="expand-left" data-size="l" data-target="orderId#{order.id}" type="button" id="buttonConfirm" data-modalorder="#orderId#{order.id}" data-order="#{order.id}"
+              = image_tag 'sound.png', width: 25
+              span.btn-inner--text.ladda-label Confirm

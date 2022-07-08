@@ -1,0 +1,42 @@
+= form_for([:admin, @background]) do |f|
+  - if @background.errors.any?
+     = errors_messages_for(@background)
+
+  .row
+    
+    .col-md-6
+      .form-group
+        = f.label :coffee_bean
+        = f.color_field :coffee_bean, class: "form-control"
+    .col-md-6
+      .form-group
+        = f.label :serving_method
+        = f.color_field :serving_method, class: "form-control"
+    .col-md-6
+      .form-group
+        = f.label :review_order
+        = f.color_field :review_order, class: "form-control"
+    .col-md-6
+      .form-group
+        = f.label :manual_brew
+        = f.color_field :manual_brew, class: "form-control"
+    .col-md-6
+      .form-group
+        = f.label :espresso_based
+        = f.color_field :espresso_based, class: "form-control"
+    .col-md-12
+      .form-group
+        = f.label :image
+        = f.file_field :image, class: "form-control", data: {fileuploader_files: @background.file_data.to_json}
+  .actions 
+    = f.button :submit, class: 'btn btn-warning', data: {loading_text: 'Please wait....', disable_with: 'Please wait....'}
+
+/ - content_for :custom_js
+  javascript:
+    $('input[name="background[image]').fileuploader({
+      listInput: 'background-image',
+      inputNameBrackets: false,
+      extensions: ['jpg', 'jpeg', 'png'],
+      addMore: false,
+      mutiple: false
+    });

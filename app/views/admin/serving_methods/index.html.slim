@@ -1,0 +1,46 @@
+
+- set_meta_tags title: 'Serving Methods'
+header.bg-gradient-info.pb-8.pt-5.pt-md-8
+  .container-fluid
+    .header-body
+      /! Card stats
+      .row
+        .col-md-4
+          = link_to admin_serving_methods_path do
+            .card.card-stats.mb-4.mb-xl-0
+              .card-body
+                .row
+                  .col
+                    h5.card-title.text-uppercase.text-muted.mb-0 Total Serving Methods
+                    span.h2.font-weight-bold.mb-0 = ServingMethod.all.size
+                  .col-auto
+                    .icon.icon-shape.bg-info.text-white.rounded-circle.shadow
+                      = icon('fas', 'concierge-bell')
+                      / i.ni.ni-circle-08
+
+                p.mt-3.mb-0.text-muted.text-sm
+                  / span.text-success.mr-2
+                  /   i.fa.fa-arrow-up
+                  /   | 3.48%
+                  / span.text-nowrap Since last month
+
+.container-fluid.mt--9
+  .row.mt-5
+    - @serving_methods.each do |serving|
+      .col-md-4.mb-3
+        .card.shadow
+          = link_to edit_admin_serving_method_path(serving) do
+            = image_tag serving.image_url, class: "card-img-top"
+          .card-body
+            h5.h2.card-title.mb-0 = serving.name
+            hr.my-3.mx-0
+            h4 Description :
+            p.card-text = serving.description
+
+            = link_to "Edit", edit_admin_serving_method_path(serving), class: "btn btn-link px-0"
+
+
+
+= link_to new_admin_serving_method_path, class: "btn btn-icon-float btn-info btn-float" do
+  = icon('fas', 'plus')
+

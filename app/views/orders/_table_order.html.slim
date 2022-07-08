@@ -1,0 +1,9 @@
+tr.text-white style=("background-color: #{order.serving_type.color}")
+  td.text-center = number
+  td 
+    = order.coffee_bean.name.gsub(/[Gg. ]/, '')
+    br
+    = order.serving_type.name.titleize
+  
+  td.text-center = order.queue_number
+  td.text-center 04:01

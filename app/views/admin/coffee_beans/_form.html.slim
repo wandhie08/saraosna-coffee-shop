@@ -1,0 +1,68 @@
+= form_for([:admin, @coffee_bean]) do |f|
+  - if @coffee_bean.errors.any?
+    = errors_messages_for(@coffee_bean)
+
+  .row
+    .col-md-6
+      .form-group
+        = f.label :name
+        = f.text_field :name, class: 'form-control', placeholder: "Name of coffee bean"
+    .col-md-6
+      .form-group
+        = f.label :area
+        = f.text_field :area, class: 'form-control', placeholder: "Area of Coffee"
+    .col-md-6
+      .form-group
+        = f.label :elevation
+        = f.text_field :elevation, class: 'form-control', placeholder: "Elevation of mounth"
+    .col-md-6
+      .form-group
+        = f.label :kind_of_coffee, 'Jenis Kopi'
+        = f.text_field :kind_of_coffee, class: 'form-control', placeholder: "Jenis Kopi"
+    .col-md-6
+      .form-group
+        = f.label :varietas
+        = f.text_field :varietas, class: 'form-control', placeholder: "varietas"
+    .col-md-6
+      .form-group
+        = f.label :process
+        = f.text_field :process, class: 'form-control', placeholder: "varietas"
+    .col-md-6
+      .form-group
+        = f.label :stock
+        = f.number_field :stock, class: 'form-control', placeholder: "Stok Coffee"
+    .col-md-6
+      .form-group
+        = f.label :available_at, 'Available at (Stil manual)'
+        = f.text_field :available_at, class: 'form-control', placeholder: "Please fill it if stock is 0"
+
+    .col-md-6
+      .form-group
+        = f.label :description
+        = f.text_area :description, rows: 3, class: 'form-control'
+    .col-md-6
+      .form-group
+        = f.label :notes
+        = f.text_area :notes, rows: 3, class: 'form-control'
+    .col-md-6
+      .form-group
+        = f.label :serving_recommendation_id, "Serving Recommendation"
+        = f.select(:serving_recommendation_id, ServingType.all.map{|serving| [serving.name, serving.id]}, {}, class: "form-control")
+
+    .col-md-6
+      .form-group
+        = f.label :image
+        = f.file_field :image, class: 'form-control'
+    .col-md-2
+      h4 Visible
+      label.custom-toggle
+        = f.check_box :visible
+        span.custom-toggle-slider.rounded-circle
+    .col-md-2
+      h4 Is Recommendation?
+      label.custom-toggle
+        = f.check_box :is_recommendation
+        span.custom-toggle-slider.rounded-circle
+
+  .actions
+    = f.submit "Submit", class: 'btn btn-warning', data: {loading_text: 'Please wait....', disable_with: 'Please wait....'}

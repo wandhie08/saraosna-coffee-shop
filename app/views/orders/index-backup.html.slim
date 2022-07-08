@@ -1,0 +1,167 @@
+- content_for :custom_js_header
+  = javascript_include_tag 'cable'
+.container-fluid
+  .row
+    .col-md-9.queue-card
+      .row
+        - number = 0
+        - @orders.each do |order|
+          
+          .col-md-3.p-0-5.clickable data-target="orderId#{order.id}"
+            / = link_to '#', data:{toggle: 'modal', target: '#exampleModalCenter'} do
+            .card.text-white.card-queue style=("background-color: #{order.serving_type.color};") 
+              .card-body.p-3.text-white
+
+                h4.my-0.text-white.float-left = order.coffee_bean.name.gsub(/[Gg. ]/, '')
+                h4.my-0.text-white.float-right = number += 1
+                br
+
+                center.counter
+                  h1.queuing-number.text-white.mt-2 = order.queue_number
+                  div class="timerOrderId-#{order.id}"
+                    p.counter-time.text-white.d-inline class="timeminutes-#{order.id}" 
+                    p.counter-time.text-white.d-inline 
+                      | :
+                    p.counter-time.text-white.d-inline class="timeseconds-#{order.id}" 
+                .float-right
+                  p.text-white.mb-0.h3 = order.serving_type.name.titleize
+      
+    .col-md-3.pl-0
+      center
+        h1 Queuing Line
+        h2 Total #{@orders.size} queues
+      .queue-table
+        table.table
+          thead.sticky
+            tr
+              th.text-center  No
+              th Order
+              th.text-center 
+                | Queue 
+                br
+                |Number
+              th.text-center
+                |Waiting 
+                br
+                |Time
+              
+          tbody#orderTable
+            - number = 0
+            - @orders.each do |order|
+              / = render partial: 'table_order', locals: {order: order, number: number += 1}
+              tr.text-white.clickable id="table-order-id-#{order.id}" style=("background-color: #{order.serving_type.color}") data-target="orderId#{order.id}"
+                td.text-center = number += 1
+                td 
+                  = order.coffee_bean.name.gsub(/[Gg. ]/, '')
+                  br
+                  = order.serving_type.name.titleize
+                
+                td.text-center = order.queue_number
+                td.text-center 
+                  div class="timerOrderId-#{order.id}"
+                    p.counter-time.text-white.d-inline class="timeminutes-#{order.id}" 
+                    p.counter-time.text-white.d-inline 
+                      | :
+                    p.counter-time.text-white.d-inline class="timeseconds-#{order.id}" 
+
+= render partial: 'order_modal', collection: @orders, as: :order
+
+- content_for :custom_js 
+  javascript:
+    
+    // var orders = ' ';
+    setInterval(function(){ 
+      Rails.ajax({
+        async: false,
+        type: 'GET',
+        url: '/orders/redis_orders',
+        success: function (response) {
+          // window.orders = response
+          response.forEach((item) => {
+            // console.log(item)
+            orderID = 'timerOrderId-'+item.id
+            timeminutesId = 'timeminutes-'+item.id
+            timesecondsId = 'timeseconds-'+item.id
+            countUpFromTimeLoop(item.created_at, orderID, timeminutesId, timesecondsId);
+          });
+        }
+      });
+    }, 1000);
+    // orders;
+    var orders = #{raw $redis.get('coffee_app_orders')}
+    
+    var orderID, timeminutesId, timesecondsId;
+    // console.log(orders);
+    // orders.forEach(loopOrders);
+
+    // function loopOrders(data) {
+    //   console.log(data)
+    // }
+
+    // orders.forEach((item) => {
+    //   console.log(item)
+    //   orderID = 'timerOrderId-'+item.id
+    //   timeminutesId = 'timeminutes-'+item.id
+    //   timesecondsId = 'timeseconds-'+item.id
+    //   countUpFromTimeLoop(item.created_at, orderID, timeminutesId, timesecondsId);
+    // });
+
+    function countUpFromTimeLoop(countFrom, id, timeminutesId, timesecondsId) {
+      // countFrom = new Date(countFrom).getTime();
+      var now = new Date(),
+          countFrom = new Date(countFrom),
+          timeDifference = (now - countFrom);
+
+      var secondsInADay = 60 * 60 * 1000 * 24,
+          secondsInAHour = 60 * 60 * 1000;
+
+      mins = Math.floor(((timeDifference % (secondsInADay)) % (secondsInAHour)) / (60 * 1000) * 1);
+      secs = Math.floor((((timeDifference % (secondsInADay)) % (secondsInAHour)) % (60 * 1000)) / 1000 * 1);
+
+      var countID = $('.'+id)[0];
+      
+      if (countID == undefined) {
+        console.log('data has been confirmed')
+      }else{
+        countID.getElementsByClassName(timeminutesId)[0].innerHTML = mins;
+        countID.getElementsByClassName(timesecondsId)[0].innerHTML = secs;
+      }
+          
+      // countUpFromTimeLoop.interval = setTimeout(function(){ countUpFromTimeLoop(countFrom, id, timeminutesId, timesecondsId); }, 1000);
+    };
+    
+      
+    
+
+- content_for :custom_js 
+  javascript:
+    $(document).on("turbolinks:load", () => {
+      $(".clickable").click(function() {
+        // Turbolinks.visit($(this).data("href"));
+        $('#'+$(this).data("target")).modal('show');
+      });
+
+      $("button.confirm").click(function(event){
+        event.preventDefault();
+        var orderId = $(this).data("order")
+        Rails.ajax({
+          type: 'POST',
+          url: '/orders/'+orderId+'/confirm',
+          success: function (response) {
+            console.log(response);
+            $('#orderId'+orderId).modal('hide');
+            notie.alert({
+              type: 1,
+              text: response.message,
+              stay: false,
+              time: 5,
+              position: 'bottom'
+            });
+          }
+        });
+
+      });
+    });
+
+
+

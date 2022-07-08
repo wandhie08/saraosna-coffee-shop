@@ -1,0 +1,209 @@
+- set_meta_tags title: "Pickup and Serving List",
+                author: "Yana",
+                description: "Pickup and Serving List Order Coffee",
+                image: "/logo.png"
+
+- content_for :custom_js_header
+  = javascript_include_tag 'cable'
+.container-fluid
+  .row.mt-4
+    .col-lg-6.col-md-12.col-sm-12
+      
+      center
+      h1 #{'Serving List'.upcase}
+      .serving-list-table.scroll-style
+        .row.mb-5
+          .col-md-11.mx-0
+            .form-group.mb-1
+              .input-group.input-group-alternative
+                .input-group-prepend
+                  span.input-group-text
+                    i.fas.fa-search
+                input#searchServingTable.form-control placeholder="Search" type="text" /
+          .col-md-12.mx-0
+            = render 'serving_table'
+    .col-lg-6.col-md-12.col-sm-12
+      / br
+      h1 #{'Pickup List'.upcase}
+      .row.mb-5
+        .col-md-9.mx-0.pr-2
+          .form-group.mb-1
+            .input-group.input-group-alternative
+              .input-group-prepend
+                span.input-group-text
+                  i.fas.fa-search
+              input#search.form-control placeholder="Search" type="text" /
+        .col-md-3
+          button.btn.btn-icon.btn-3.btn-grey.float-left.ladda-button id="btn-clear" data-style="expand-left" data-size="l" type="button"
+            .ladda-label 
+              = icon('far', 'times-circle')
+              span.btn-inner--icon
+                
+                | Clear List
+
+        .col-md-6
+          .pickup-list-table
+            = render partial: 'pickup_table', locals: {orders: @latest_sevent_orders}
+        .col-md-6
+          .pickup-list-table.scroll-style
+            = render partial: 'pickup_table', locals: {orders: @orders_done}
+
+        / = render partial: 'pickup_table', collection: @orders.status_done, as: :order
+        / = react_component('SearchBar')
+
+= render partial: 'pickup_modal', collection: @orders.status_processing.latest, as: :order
+
+audio.audioBell preload="none" src="/sound.mp3" /
+- content_for :custom_js 
+  coffee:
+    $rows = $('#table tr')
+    $('#search').keyup ->
+      val = $.trim($(this).val()).replace(RegExp(' +', 'g'), ' ').toLowerCase()
+      $rows.show().filter(->
+        text = $(this).text().replace(/\s+/g, ' ').toLowerCase()
+        ! ~text.indexOf(val)
+      ).hide()
+      return
+    $('.clickable').click ->
+      $('#' + $(this).data('target')).modal 'show'
+      return
+
+  coffee:
+    $rows = $('#servingtable tr')
+    $('#searchServingTable').keyup ->
+      val = $.trim($(this).val()).replace(RegExp(' +', 'g'), ' ').toLowerCase()
+      $rows.show().filter(->
+        text = $(this).text().replace(/\s+/g, ' ').toLowerCase()
+        ! ~text.indexOf(val)
+      ).hide()
+      return
+    $('.clickable').click ->
+      $('#' + $(this).data('target')).modal 'show'
+      return
+      
+  javascript:
+    $("button#btn-clear").click(function() {
+      var l = Ladda.create(this);
+      l.start();
+      Rails.ajax({
+        type: 'POST',
+        url: '/orders/clear_list',
+        success: function (response) {
+          l.stop();
+          notie.alert({
+            type: 1,
+            text: response.message,
+            stay: false,
+            time: 5,
+            position: 'bottom'
+          });
+        }
+      });
+    });
+
+    $("button.call").click(function() {
+      var l = Ladda.create(this);
+      l.start();
+      $(".audioBell").trigger('load');
+      $(".audioBell").trigger('play');
+      var orderId = $(this).data("order");
+      setTimeout(function(){ 
+        Rails.ajax({
+          type: 'POST',
+          url: '/orders/'+orderId+'/call_order',
+          success: function (response) {
+            l.stop();
+          }
+        });
+      }, 100);
+    });
+
+    $("button.delivered").click(function() {
+      var l = Ladda.create(this);
+      l.start();
+      var orderId = $(this).data("order");
+      Rails.ajax({
+        type: 'POST',
+        url: '/orders/'+orderId+'/confirm_delivered',
+        success: function (response) {
+          notie.alert({
+            type: 1,
+            text: response.message,
+            stay: false,
+            time: 5,
+            position: 'bottom'
+          });
+          l.stop();
+        }
+      });
+    });
+
+    $("button.confirm").click(function(event){
+      event.preventDefault();
+      var l = Ladda.create(this);
+      l.start();
+      // $(".audioBell").trigger('load');
+      // $(".audioBell").trigger('play');
+      var orderId = $(this).data("order");
+      Rails.ajax({
+        type: 'POST',
+        url: '/orders/'+orderId+'/confirm_done',
+        success: function (response) {
+          // console.log(response);
+          $('#orderId'+orderId).modal('hide');
+          notie.alert({
+            type: 1,
+            text: response.message,
+            stay: false,
+            time: 5,
+            position: 'bottom'
+          });
+          l.stop();
+        }
+      });
+      // setTimeout(function(){ 
+        
+      // }, 10);
+    });
+
+- content_for :custom_js 
+  javascript:
+    $(document).on("turbolinks:load", () => {
+      var orders = #{raw @orders.status_processing.latest.to_json}
+      var orderID, timeminutesId, timesecondsId;
+      orders.forEach((item) => {
+        orderID = 'timerOrderId-'+item.id
+        timeminutesId = 'timeminutes-'+item.id
+        timesecondsId = 'timeseconds-'+item.id
+        countUpFromTimeLoop(item.queuing_time, orderID, timeminutesId, timesecondsId);
+      });
+
+      function countUpFromTimeLoop(countFrom, id, timeminutesId, timesecondsId) {
+        var now = new Date(),
+            countFrom = new Date(countFrom),
+            timeDifference = (now - countFrom);
+        var secondsInADay = 60 * 60 * 1000 * 24,
+            secondsInAHour = 60 * 60 * 1000;
+          
+        minutes = Math.floor(((timeDifference % (secondsInADay)) % (secondsInAHour)) / (60 * 1000) * 1);
+        seconds = Math.floor((((timeDifference % (secondsInADay)) % (secondsInAHour)) % (60 * 1000)) / 1000 * 1);
+        if (minutes.toString().length == 1) {
+          minutes = "0" + minutes;
+        }
+        if (seconds.toString().length == 1) {
+          seconds = "0" + seconds;
+        }
+        
+        var countIDS = $('.'+id);
+        $(countIDS).each(function(index, element) {
+          var timeminutesElement = element.getElementsByClassName(timeminutesId);
+          var timesecondsElement = element.getElementsByClassName(timesecondsId);
+          for (i=0;i<timeminutesElement.length;i++) {
+            timeminutesElement[i].innerHTML = minutes;
+            timesecondsElement[i].innerHTML = seconds;
+          }
+        });
+        countUpFromTimeLoop.interval = setTimeout(function(){ countUpFromTimeLoop(countFrom, id, timeminutesId, timesecondsId); }, 1000);
+      };
+    });
+

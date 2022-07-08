@@ -1,0 +1,80 @@
+- set_meta_tags title: "Display Orders",
+                author: "Yana"
+- content_for :custom_js_header
+  = javascript_include_tag 'cable'
+.queue-display
+  .row.text-white.text-center
+    .col-1
+      p.h1.text-white.mt-5.text-center PROCESS
+    - @processing_orders.each do |order|
+      .col
+        p.display-queue-number = order.queue_number
+  /.row.text-white.text-center.mt-1
+    .col-1
+      p.h1.text-white.mt-5.text-center ANTRIAN
+    - @pending_orders.each do |order|
+      .col-sm
+        p.display-queue-number = order.queue_number
+  .row
+    .col-1
+      p.h1.text-white.mt-7.text-center READY
+    - @sevent_orders.each do |order|
+      .col-sm
+        .time-duration.text-center = order.queueing_time_duration
+        .pickup-number = order.queue_number
+        .time-duration.text-center = order.serving_time_duration
+  .row.mt-2
+    .col-1
+      p.h1.text-white.mt-7.text-center
+    - @second_orders.each do |order|
+      .col-sm
+        .time-duration.text-center = order.queueing_time_duration
+        .pickup-number = order.queue_number
+        .time-duration.text-center = order.serving_time_duration
+    /.col.description
+      p.mt-2 Queuing Time
+      br
+      p.mt-1 Queue number
+      br
+      p.mt-1  Bean to brew
+  /table.tg.table.mt-4
+    tr
+      /th.tg-nrix.title rowspan="3"  Serving
+      th.tg-nrix.title rowspan="3"  
+        | Ready For
+        br
+        | Pickup
+      - @sevent_orders.each do |order|
+        th.tg-0lax.text-center = order.queueing_time_duration
+        
+      th.tg-0lax Queuing Time
+    tr
+      - @sevent_orders.each do |order|
+        td
+          .pickup-number = order.queue_number
+      td.tg-0lax Queue number
+    tr
+      - @sevent_orders.each do |order|
+        td.tg-0lax.text-center = order.serving_time_duration
+      td.tg-0lax Bean to brew
+    tr
+      td.tg-nrix
+       
+      td.tg-nrix colspan="7" rowspan="5"
+
+    /- @orders.status_processing.latest.limit(8).each do |order|
+      tr
+        td.tg-baqh.pt-0
+          br
+          .queuue-number 
+            /= order.queue_number
+          .detail 
+            /= order.coffee_bean.name
+            br
+            /= order.serving_type.name
+
+  
+  
+
+
+

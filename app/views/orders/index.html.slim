@@ -1,0 +1,116 @@
+- set_meta_tags title: "order List",
+                author: "Yana",
+                description: "order List Coffee",
+                image: "/logo.png"
+
+- content_for :custom_js_header
+  = javascript_include_tag 'cable'
+.container-fluid
+  .row
+    .col-md-9.queue-card
+      .row
+        / = react_component("OrderList")
+        - number = 0
+        - @orders.limit(12).each do |order|
+          
+          .col-md-3.p-0-5.clickable data-target="orderId#{order.id}"
+            / = link_to '#', data:{toggle: 'modal', target: '#exampleModalCenter'} do
+            .card.text-white.card-queue style=("background-color: #{order.serving_type.color};") 
+              .card-body.p-3.text-white
+
+                h2.my-0.text-white.float-left = order.coffee_bean.name
+                h2.my-0.text-white.float-right = number += 1
+                br
+
+                center.counter
+                  h1.queuing-number.text-white.mt-4 = order.queue_number
+                  div.mt-3 class="timerOrderId-#{order.id}"
+                    p.counter-time.text-white.d-inline class="timeminutes-#{order.id}" 
+                    p.counter-time.text-white.d-inline 
+                      | :
+                    p.counter-time.text-white.d-inline class="timeseconds-#{order.id}" 
+                .float-right.mt-3
+                  p.text-white.mb-0.h3 = order.serving_type.name.titleize
+      
+    .col-md-3.pl-0
+      center
+        h1 Queueing Line
+        h2 Total #{@orders.size} queues
+      .queue-table
+        table.table
+          thead.sticky
+            tr
+              th.text-center  No
+              th Order
+              th.text-center 
+                | Queue 
+                br
+                |Number
+              /th.text-center
+                |Waiting 
+                br
+                |Time
+              
+          tbody#orderTable
+            - number = 0
+            / = react_component("OrderTableList")
+            - @orders.each do |order|
+              / = render partial: 'table_order', locals: {order: order, number: number += 1}
+              tr.text-white.clickable id="table-order-id-#{order.id}" style=("background-color: #{order.serving_type.color}") data-target="orderId#{order.id}"
+                td.text-center = number += 1
+                td 
+                  = order.coffee_bean.name
+                  br
+                  = order.serving_type.name.titleize
+                
+                td.text-center = order.queue_number
+                /td.text-center 
+                  div class="timerOrderId-#{order.id}"
+                    p.counter-time.text-white.d-inline class="timeminutes-#{order.id}" 
+                    p.counter-time.text-white.d-inline 
+                      | :
+                    p.counter-time.text-white.d-inline class="timeseconds-#{order.id}" 
+
+= render partial: 'order_modal', collection: @orders, as: :order
+
+= render 'counter'
+
+  
+- content_for :custom_js 
+  coffee:
+    $('.clickable').click ->
+      $('#' + $(this).data('target')).modal 'show'
+      return
+    $('button.confirm').click (event) ->
+      event.preventDefault()
+      l = Ladda.create(this)
+      l.start()
+      orderId = $(this).data('order')
+      # var time = 
+      Rails.ajax
+        type: 'POST'
+        url: '/orders/' + orderId + '/confirm/'
+        success: (response) ->
+          console.log response
+          l.stop()
+          $('#orderId' + orderId).modal 'hide'
+          if response.success
+            notie.alert
+              type: 1
+              text: response.message
+              stay: false
+              time: 5
+              position: 'bottom'
+            return
+          else
+            notie.alert
+              type: 3
+              text: response.message
+              stay: false
+              time: 5
+              position: 'bottom'
+            return
+      return
+
+
+
