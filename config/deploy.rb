@@ -2,9 +2,9 @@
 lock "~> 3.11.1"
 
 set :application, "coffeeapp"
-set :repo_url, "git@github.com:muhammadyana/saraosna-coffee-shop.git"
+set :repo_url, "git@github.com:wandhie08/saraosna-coffee-shop.git"
 
-set :rvm_ruby_version,  "2.5.1"
+set :rvm_ruby_version,  "2.6.8"
 set :puma_threads,      [1, 16]
 set :puma_workers,      1
 set :linked_files,      %w{.env config/master.key config/database.yml}
